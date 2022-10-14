@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="PublishConfigData" autoUpload="Always" serverName="Sledge CS Lab" remoteFilesAllowedToDisappearOnAutoupload="false">
+    <serverData>
+      <paths name="Sledge CS Lab">
+        <serverdata>
+          <mappings>
+            <mapping deploy="/cs153/xv6" local="$PROJECT_DIR$" web="/" />
+          </mappings>
+        </serverdata>
+      </paths>
+    </serverData>
+    <option name="myAutoUpload" value="ALWAYS" />
+  </component>
+</project>
