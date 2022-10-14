@@ -9,5 +9,5 @@
 int main(int argc, char *argv[]) {
     //printf(1, "hello world\n");
     hello(); // Call function from lab 0
-    exit();
+    exit(0);
 }

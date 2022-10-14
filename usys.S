@@ -30,3 +30,4 @@ SYSCALL(sbrk)
 SYSCALL(sleep)
 SYSCALL(uptime)
 SYSCALL(hello) // Again, the hello function from lab 0
+SYSCALL(waitpid) // Lab 1 Part C

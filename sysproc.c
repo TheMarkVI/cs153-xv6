@@ -16,14 +16,18 @@ sys_fork(void)
 int
 sys_exit(void)
 {
-  exit();
+  int exitStat;
+  argint(0, &exitStat); // unary op points to exitStat address in memory
+  exit(exitStat);
   return 0;  // not reached
 }
 
 int
 sys_wait(void)
 {
-  return wait();
+  int *waitStat;
+  argptr(0, (void*)&waitStat, sizeof(*waitStat)); // args: int, char**, int
+  return wait(waitStat);
 }
 
 int
@@ -90,8 +94,18 @@ sys_uptime(void)
   return xticks;
 }
 
+// User-added functions/syscalls
+
 // Hello syscall function
 int sys_hello(void) {
     hello();
     return 0;
+}
+
+int sys_waitpid(void) {
+    int *waitStat;
+    int pid;
+    argint(0, &pid);
+    argptr(0, (void *) &waitStat, sizeof(*waitStat)); // args: int, char**, int
+    return waitpid(pid, waitStat, 1);
 }
