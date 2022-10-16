@@ -26,6 +26,7 @@ int uptime(void);
 // User-added functions/syscalls
 int hello(void); // function from lab 0
 int waitpid(int, int*, int); // lab 1 part c
+int lab1_test(void); // lab 1 part d
 
 // ulib.c
 int stat(const char*, struct stat*);

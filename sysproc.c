@@ -106,6 +106,6 @@ int sys_waitpid(void) {
     int *waitStat;
     int pid;
     argint(0, &pid);
-    argptr(0, (void *) &waitStat, sizeof(*waitStat)); // args: int, char**, int
+    argptr(1, (void *) &waitStat, sizeof(*waitStat)); // args: int, char**, int
     return waitpid(pid, waitStat, 1);
 }

@@ -106,6 +106,7 @@ extern int sys_uptime(void);
 // user-added functions
 extern int sys_hello(void); // sys call hello
 extern int sys_waitpid(void); // sys call waitpid
+//extern int sys_lab1_test(void); // sys call lab1 test
 
 static int (*syscalls[])(void) = {
 [SYS_fork]    sys_fork,

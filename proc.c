@@ -589,3 +589,7 @@ waitpid(int pid, int* status, int options)
         sleep(curproc, &ptable.lock);  //DOC: wait-sleep
     }
 }
+
+//void lab1_test(void) {
+//    cprintf("\n Run Lab 1 Test\n");
+//}
