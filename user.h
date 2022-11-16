@@ -27,6 +27,8 @@ int uptime(void);
 int hello(void); // function from lab 0
 int waitpid(int, int*, int); // lab 1 part c
 int lab1_test(void); // lab 1 part d
+int lab2_test(void); // lab 2 priority test
+int setPriority(int); // lab 2, set priority function
 
 // ulib.c
 int stat(const char*, struct stat*);

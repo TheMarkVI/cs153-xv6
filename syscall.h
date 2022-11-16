@@ -22,3 +22,5 @@
 #define SYS_close  21
 #define SYS_hello  22 // Hello function/system call
 #define SYS_waitpid 23 // waitpid syscall for lab1 part c
+#define SYS_setPriority 24 // set priority of process
+

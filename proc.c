@@ -88,6 +88,8 @@ allocproc(void)
 found:
   p->state = EMBRYO;
   p->pid = nextpid++;
+  p->priority = 10;
+//  p->T_start = ticks;
 
   release(&ptable.lock);
 
@@ -199,6 +201,8 @@ fork(void)
   np->sz = curproc->sz;
   np->parent = curproc;
   *np->tf = *curproc->tf;
+  np->T_start = ticks;
+//  np->burstTime = ticks;
 
   // Clear %eax so that fork returns 0 in the child.
   np->tf->eax = 0;
@@ -230,6 +234,7 @@ exit(int exitStat)
   struct proc *curproc = myproc();
   struct proc *p;
   int fd;
+  int turnaround;
 
   curproc->exitStatus = exitStat;
 
@@ -244,7 +249,14 @@ exit(int exitStat)
     }
   }
 
-  begin_op();
+  curproc->T_finish = ticks;
+  turnaround = curproc->T_finish - curproc->T_start;
+  cprintf("\nTurnaround time: %d | Waiting time: %d\n", turnaround, turnaround - curproc->burstTime);
+//  cprintf("T_start = %d, T_finish = %d\n", curproc->T_start, curproc->T_finish);
+//  cprintf("Burst time = %d\n", curproc->burstTime);
+
+
+    begin_op();
   iput(curproc->cwd);
   end_op();
   curproc->cwd = 0;
@@ -330,6 +342,9 @@ scheduler(void)
   struct proc *p;
   struct cpu *c = mycpu();
   c->proc = 0;
+  int topPriority = 31;
+//  int startRun;
+//  int endRun;
   
   for(;;){
     // Enable interrupts on this processor.
@@ -337,9 +352,26 @@ scheduler(void)
 
     // Loop over process table looking for process to run.
     acquire(&ptable.lock);
+
+    for(p = ptable.proc; p < &ptable.proc[NPROC]; p++) {
+        // Find highest priority process
+        if(p->priority < topPriority) {
+            topPriority = p->priority;
+        }
+    }
+
     for(p = ptable.proc; p < &ptable.proc[NPROC]; p++){
-      if(p->state != RUNNABLE)
-        continue;
+
+      if(p->priority > topPriority) { // check for curr proc priority is top priority
+          p->priority--; // make proc increase priority everytime it waits
+          continue;
+      }
+
+      // Continues to check if proc is runnable.
+      if(p->state != RUNNABLE) {
+          continue; // works like 'break;'
+      }
+
 
       // Switch to chosen process.  It is the process's job
       // to release ptable.lock and then reacquire it
@@ -347,16 +379,22 @@ scheduler(void)
       c->proc = p;
       switchuvm(p);
       p->state = RUNNING;
+      p->burstTime++;
 
-      swtch(&(c->scheduler), p->context);
+
+        swtch(&(c->scheduler), p->context);
       switchkvm();
+
+      p->priority++; // decrease priority every time proc is running.
+//      endRun = ticks;
 
       // Process is done running for now.
       // It should have changed its p->state before coming back.
       c->proc = 0;
+//        cprintf("startRun = %d, endRun = %d\n", startRun, endRun);
+
     }
     release(&ptable.lock);
-
   }
 }
 
@@ -593,3 +631,9 @@ waitpid(int pid, int* status, int options)
 //void lab1_test(void) {
 //    cprintf("\n Run Lab 1 Test\n");
 //}
+
+void
+setPriority(int priority) {
+    struct proc *p = myproc();
+    p->priority = priority;
+}

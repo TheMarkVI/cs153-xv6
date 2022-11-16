@@ -123,6 +123,7 @@ void            yield(void);
 // User-added functions and syscalls
 void            hello(void); // syscall hello fn
 int             waitpid(int, int*, int);
+void            setPriority(int); // lab 2
 //void            lab1_test(void);
 
 // swtch.S

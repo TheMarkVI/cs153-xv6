@@ -106,7 +106,8 @@ extern int sys_uptime(void);
 // user-added functions
 extern int sys_hello(void); // sys call hello
 extern int sys_waitpid(void); // sys call waitpid
-//extern int sys_lab1_test(void); // sys call lab1 test
+extern int sys_setPriority(void); // lab 2 sys call priority
+// extern int sys_lab1_test(void); // sys call lab1 test
 
 static int (*syscalls[])(void) = {
 [SYS_fork]    sys_fork,
@@ -133,6 +134,7 @@ static int (*syscalls[])(void) = {
 // user-added
 [SYS_hello]   sys_hello, // sys call hello
 [SYS_waitpid] sys_waitpid, // sys call waitpid
+[SYS_setPriority] sys_setPriority, // sys call setpriority
 };
 
 void
